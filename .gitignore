@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.playwright-browsers/
+.cursor/
+.DS_Store
+vendor/axe.min.js

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Access Scan</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to main content</a>
+    <div class="shell">
+      <header class="hero">
+        <p class="eyebrow">Access Scan</p>
+        <h1>Check a website with axe-core.</h1>
+        <p class="lede">
+          Load a URL or HTML snippet, then run the local
+          <code>axe-core {{ axe_version }}</code> engine. Results include
+          violations, needs-review items, passes, and inapplicable rules.
+        </p>
+        <p class="engine-path">Engine home: <code>{{ axe_home }}</code></p>
+      </header>
+
+      <nav class="tabs" aria-label="Tool modes">
+        <button type="button" class="tab is-active" data-panel="scan" aria-current="page">
+          Page scan
+        </button>
+        <button type="button" class="tab" data-panel="virtual">Virtual rule</button>
+        <button type="button" class="tab" data-panel="inspect">Commons inspector</button>
+        <button type="button" class="tab" data-panel="catalog">Rule catalog</button>
+      </nav>
+
+      <main id="main">
+        <section id="panel-scan" class="panel is-active">
+          <form id="scan-form" novalidate>
+            <fieldset class="source-toggle">
+              <legend>What to scan</legend>
+              <label><input type="radio" name="sourceType" value="url" checked /> URL</label>
+              <label><input type="radio" name="sourceType" value="html" /> HTML</label>
+            </fieldset>
+
+            <label class="field" id="url-field">
+              <span class="label-row"><span>Website URL</span></span>
+              <input
+                id="url"
+                name="url"
+                type="url"
+                inputmode="url"
+                autocomplete="url"
+                placeholder="https://example.com"
+              />
+            </label>
+
+            <label class="field" id="html-field" hidden>
+              <span class="label-row"><span>HTML document</span></span>
+              <textarea
+                id="html"
+                name="html"
+                rows="8"
+                placeholder="<!doctype html><html lang=&quot;en&quot;><title>Demo</title><body>..."
+              ></textarea>
+            </label>
+
+            <label class="field">
+              <span class="label-row"><span>Standard</span></span>
+              <select id="preset" name="preset"></select>
+            </label>
+
+            <div class="checks-row">
+              <label class="check">
+                <input type="checkbox" id="experimental" />
+                Include experimental rules
+              </label>
+              <label class="check">
+                <input type="checkbox" id="best-practice" checked />
+                Keep best-practice rules when using tag presets
+              </label>
+            </div>
+
+            <details class="advanced">
+              <summary>axe-core options</summary>
+              <div class="advanced-grid">
+                <label class="field">
+                  <span>Locale</span>
+                  <select id="locale"></select>
+                </label>
+                <label class="field">
+                  <span>Reporter</span>
+                  <select id="reporter"></select>
+                </label>
+                <label class="field">
+                  <span>Include selectors</span>
+                  <input id="include" placeholder="main, #content" />
+                </label>
+                <label class="field">
+                  <span>Exclude selectors</span>
+                  <input id="exclude" placeholder=".ad-banner, iframe.third-party" />
+                </label>
+                <label class="field">
+                  <span>fromFrames</span>
+                  <input id="fromFrames" placeholder="iframe#payment, form" />
+                </label>
+                <label class="field">
+                  <span>fromShadowDom</span>
+                  <input id="fromShadowDom" placeholder=".host, .inner" />
+                </label>
+                <label class="field">
+                  <span>Viewport</span>
+                  <select id="viewport">
+                    <option value="1280x720">Desktop 1280×720</option>
+                    <option value="1440x900">Desktop 1440×900</option>
+                    <option value="768x1024">Tablet 768×1024</option>
+                    <option value="390x844">Mobile 390×844</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Wait until</span>
+                  <select id="waitUntil">
+                    <option value="load">load</option>
+                    <option value="domcontentloaded">domcontentloaded</option>
+                    <option value="networkidle">networkidle</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Timeout (ms)</span>
+                  <input id="timeoutMs" type="number" min="1000" max="120000" value="30000" />
+                </label>
+                <label class="field">
+                  <span>frameWaitTime (ms)</span>
+                  <input id="frameWaitTime" type="number" min="0" max="300000" value="60000" />
+                </label>
+                <label class="field">
+                  <span>pingWaitTime (ms)</span>
+                  <input id="pingWaitTime" type="number" min="0" max="60000" value="500" />
+                </label>
+                <fieldset class="toggles">
+                  <legend>Result extras</legend>
+                  <label><input type="checkbox" id="iframes" checked /> iframes</label>
+                  <label><input type="checkbox" id="selectors" checked /> selectors</label>
+                  <label><input type="checkbox" id="ancestry" /> ancestry</label>
+                  <label><input type="checkbox" id="xpath" /> xpath</label>
+                  <label><input type="checkbox" id="absolutePaths" /> absolutePaths</label>
+                  <label><input type="checkbox" id="performanceTimer" /> performanceTimer</label>
+                  <label><input type="checkbox" id="noHtml" /> noHtml</label>
+                  <label><input type="checkbox" id="preload" checked /> preload assets</label>
+                </fieldset>
+                <fieldset class="toggles">
+                  <legend>resultTypes</legend>
+                  <label><input type="checkbox" class="result-type" value="violations" checked /> violations</label>
+                  <label><input type="checkbox" class="result-type" value="incomplete" checked /> incomplete</label>
+                  <label><input type="checkbox" class="result-type" value="passes" checked /> passes</label>
+                  <label><input type="checkbox" class="result-type" value="inapplicable" /> inapplicable</label>
+                </fieldset>
+                <label class="field full">
+                  <span>Run only these rule IDs (comma-separated, overrides preset tags)</span>
+                  <input id="runOnlyRules" placeholder="image-alt, button-name" />
+                </label>
+                <label class="field full">
+                  <span>Disable rule IDs</span>
+                  <input id="disableRules" placeholder="color-contrast, valid-lang" />
+                </label>
+                <label class="field full">
+                  <span>preload assets (cssom, media)</span>
+                  <input id="preloadAssets" value="cssom, media" />
+                </label>
+                <label class="field">
+                  <span>Branding (helpUrl application)</span>
+                  <input id="branding" value="access-scan" />
+                </label>
+                <label class="field">
+                  <span>allowedOrigins</span>
+                  <input id="allowedOrigins" placeholder="<unsafe_all_origins>" />
+                </label>
+                <label class="field full">
+                  <span>configure.checks JSON</span>
+                  <textarea id="checksJson" rows="3" placeholder='[{"id":"color-contrast","options":{"ignoreLength":true}}]'></textarea>
+                </label>
+                <label class="field full">
+                  <span>configure.rules JSON</span>
+                  <textarea id="rulesJson" rows="3" placeholder='[{"id":"color-contrast","enabled":true}]'></textarea>
+                </label>
+                <label class="field full">
+                  <span>configure.standards JSON</span>
+                  <textarea id="standardsJson" rows="3" placeholder='{"ariaRoles":{"button":{"unsupported":false}}}'></textarea>
+                </label>
+                <label class="field full">
+                  <span>externalAPIs elementInternals JSON</span>
+                  <textarea id="elementInternals" rows="3" placeholder="[]"></textarea>
+                </label>
+              </div>
+            </details>
+
+            <button type="submit" id="scan-btn">Run accessibility scan</button>
+          </form>
+
+          <section class="results" aria-live="polite">
+            <div id="scan-status" class="status idle">
+              Results appear here after a scan. The engine tests rendered content,
+              including nested iframes via <code>axe.runPartial</code> and
+              <code>axe.finishRun</code>.
+            </div>
+            <div id="scan-output" hidden></div>
+          </section>
+        </section>
+
+        <section id="panel-virtual" class="panel" hidden>
+          <form id="virtual-form">
+            <p class="lede compact">
+              <code>axe.runVirtualRule</code> tests one serial virtual node without
+              a full page render. Useful for unit-style checks.
+            </p>
+            <label class="field">
+              <span>Rule</span>
+              <select id="virtual-rule"></select>
+            </label>
+            <label class="field">
+              <span>nodeName</span>
+              <input id="virtual-node-name" value="img" />
+            </label>
+            <label class="field">
+              <span>Attributes (one <code>name=value</code> per line)</span>
+              <textarea id="virtual-attrs" rows="4" placeholder="src=photo.jpg"></textarea>
+            </label>
+            <label class="field">
+              <span>Children JSON (optional)</span>
+              <textarea id="virtual-children" rows="3" placeholder='[{"nodeName":"#text","nodeValue":"Save"}]'></textarea>
+            </label>
+            <button type="submit">Run virtual rule</button>
+          </form>
+          <section class="results">
+            <div id="virtual-status" class="status idle">Pick a rule and a virtual node, then run.</div>
+            <div id="virtual-output" hidden></div>
+          </section>
+        </section>
+
+        <section id="panel-inspect" class="panel" hidden>
+          <form id="inspect-form">
+            <p class="lede compact">
+              <code>axe.setup</code> builds the virtual tree so
+              <code>axe.commons</code> helpers can inspect a node. The page is
+              torn down with <code>axe.teardown</code> afterward.
+            </p>
+            <label class="field">
+              <span>HTML</span>
+              <textarea id="inspect-html" rows="8"><!doctype html>
+<html lang="en">
+  <body>
+    <button></button>
+    <img src="hero.jpg">
+  </body>
+</html></textarea>
+            </label>
+            <label class="field">
+              <span>Selector</span>
+              <input id="inspect-selector" value="button" />
+            </label>
+            <fieldset class="toggles" id="commons-calls">
+              <legend>axe.commons calls</legend>
+            </fieldset>
+            <button type="submit">Inspect node</button>
+          </form>
+          <section class="results">
+            <div id="inspect-status" class="status idle">Paste HTML and choose commons helpers to run.</div>
+            <pre id="inspect-output" class="json" hidden></pre>
+          </section>
+        </section>
+
+        <section id="panel-catalog" class="panel" hidden>
+          <div class="catalog-toolbar">
+            <label class="field">
+              <span>Search rules</span>
+              <input id="catalog-search" type="search" placeholder="image-alt, contrast, landmark" />
+            </label>
+            <label class="field">
+              <span>Tag filter</span>
+              <select id="catalog-tag">
+                <option value="">All tags</option>
+              </select>
+            </label>
+          </div>
+          <p id="catalog-count" class="count"></p>
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">axe-core rules</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Rule</th>
+                  <th scope="col">Impact</th>
+                  <th scope="col">Default</th>
+                  <th scope="col">Tags</th>
+                </tr>
+              </thead>
+              <tbody id="catalog-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
