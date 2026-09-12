@@ -12,9 +12,8 @@ class Viewport(BaseModel):
 
 
 class ScanSource(BaseModel):
-    type: str = Field("url", pattern="^(url|html)$")
+    type: str = Field("url", pattern="^url$")
     url: Optional[str] = Field(None, max_length=4000)
-    html: Optional[str] = Field(None, max_length=2_000_000)
 
 
 class ScanContext(BaseModel):

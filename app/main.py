@@ -89,8 +89,6 @@ def get_rule(rule_id: str) -> dict:
 async def scan(payload: ScanRequest) -> dict:
     if payload.source.type == "url" and not (payload.source.url or "").strip():
         raise HTTPException(status_code=400, detail="Enter a website URL.")
-    if payload.source.type == "html" and not (payload.source.html or "").strip():
-        raise HTTPException(status_code=400, detail="Paste HTML to scan.")
     try:
         return await scanner.scan(payload)
     except ValueError as exc:

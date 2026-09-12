@@ -24,14 +24,6 @@ document.querySelectorAll(".tab").forEach((tab) => {
   });
 });
 
-document.querySelectorAll("input[name=sourceType]").forEach((input) => {
-  input.addEventListener("change", () => {
-    const isHtml = document.querySelector("input[name=sourceType]:checked").value === "html";
-    document.getElementById("url-field").hidden = isHtml;
-    document.getElementById("html-field").hidden = !isHtml;
-  });
-});
-
 function parseList(value) {
   return String(value || "")
     .split(/[\n,]/)
@@ -142,7 +134,6 @@ document.getElementById("catalog-search").addEventListener("input", renderCatalo
 document.getElementById("catalog-tag").addEventListener("change", renderCatalog);
 
 function buildScanPayload() {
-  const sourceType = document.querySelector("input[name=sourceType]:checked").value;
   const [width, height] = document.getElementById("viewport").value.split("x").map(Number);
   const resultTypes = [...document.querySelectorAll(".result-type:checked")].map((el) => el.value);
   const runOnlyRules = parseList(document.getElementById("runOnlyRules").value);
@@ -187,10 +178,7 @@ function buildScanPayload() {
   if (standards) configure.standards = standards;
 
   const payload = {
-    source:
-      sourceType === "html"
-        ? { type: "html", html: document.getElementById("html").value }
-        : { type: "url", url: document.getElementById("url").value },
+    source: { type: "url", url: document.getElementById("url").value },
     preset: document.getElementById("preset").value,
     locale: document.getElementById("locale").value,
     enableExperimental: document.getElementById("experimental").checked,

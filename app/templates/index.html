@@ -13,7 +13,7 @@
         <p class="eyebrow">Access Scan</p>
         <h1>Check a website with axe-core.</h1>
         <p class="lede">
-          Load a URL or HTML snippet, then run the local
+          Load a public page by URL, then run the local
           <code>axe-core {{ axe_version }}</code> engine. Results include
           violations, needs-review items, passes, and inapplicable rules.
         </p>
@@ -32,12 +32,6 @@
       <main id="main">
         <section id="panel-scan" class="panel is-active">
           <form id="scan-form" novalidate>
-            <fieldset class="source-toggle">
-              <legend>What to scan</legend>
-              <label><input type="radio" name="sourceType" value="url" checked /> URL</label>
-              <label><input type="radio" name="sourceType" value="html" /> HTML</label>
-            </fieldset>
-
             <label class="field" id="url-field">
               <span class="label-row"><span>Website URL</span></span>
               <input
@@ -47,17 +41,8 @@
                 inputmode="url"
                 autocomplete="url"
                 placeholder="https://example.com"
+                required
               />
-            </label>
-
-            <label class="field" id="html-field" hidden>
-              <span class="label-row"><span>HTML document</span></span>
-              <textarea
-                id="html"
-                name="html"
-                rows="8"
-                placeholder="<!doctype html><html lang=&quot;en&quot;><title>Demo</title><body>..."
-              ></textarea>
             </label>
 
             <label class="field">

@@ -251,16 +251,12 @@ class AxeScanner:
             logs: list[str] = []
             page.on("console", lambda msg: logs.append(f"{msg.type}: {msg.text}"))
 
-            if request.source.type == "html":
-                html = request.source.html or ""
-                await page.set_content(html, wait_until=request.wait_until)
-            else:
-                url = (request.source.url or "").strip()
-                if not url:
-                    raise ValueError("Enter a website URL.")
-                if "://" not in url:
-                    url = "https://" + url
-                await page.goto(url, wait_until=request.wait_until, timeout=request.timeout_ms)
+            url = (request.source.url or "").strip()
+            if not url:
+                raise ValueError("Enter a website URL.")
+            if "://" not in url:
+                url = "https://" + url
+            await page.goto(url, wait_until=request.wait_until, timeout=request.timeout_ms)
 
             if request.element_internals is not None or request.element_internals_timeout is not None:
                 await self._inject(page, spec)

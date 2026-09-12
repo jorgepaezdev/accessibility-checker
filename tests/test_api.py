@@ -50,3 +50,11 @@ def test_rules_filter(client):
 def test_scan_requires_url(client):
     response = client.post("/api/scan", json={"source": {"type": "url", "url": ""}})
     assert response.status_code == 400
+
+
+def test_scan_rejects_html_source(client):
+    response = client.post(
+        "/api/scan",
+        json={"source": {"type": "html", "html": "<html></html>"}},
+    )
+    assert response.status_code == 422
