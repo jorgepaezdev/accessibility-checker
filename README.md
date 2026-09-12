@@ -28,6 +28,10 @@ If `~/axe-core` is not built, the first launch downloads matching `axe.min.js` (
 
 Override the engine path with `AXE_CORE_HOME`.
 
+## Website copy
+
+This repo is the source of truth. After a change here is committed and pushed, copy the same product change onto the [website](https://github.com/jorgepaezdev/website) `/accessibility-checker` page. Do not start accessibility-checker work on the website.
+
 ## CLI
 
 ```bash
