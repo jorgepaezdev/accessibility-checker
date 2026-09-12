@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .playwright-browsers/
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 .DS_Store
 vendor/axe.min.js
